@@ -1,6 +1,6 @@
 # Feeds Canonical Decisions
 
-Status: **Canonical — Phase 1 system convergence**  
+Status: **Canonical — system convergence**  
 Established: 2026-09-19
 
 This log records the decisions that govern subsequent Feeds work. Earlier repository artifacts remain useful implementation history, but they do not override accepted decisions here.
