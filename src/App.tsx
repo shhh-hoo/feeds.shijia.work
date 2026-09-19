@@ -110,7 +110,7 @@ function Card({
             {state?.liked ? "♥" : "♡"}
           </button>
           <button
-            className={state?.consed ? "active" : ""}
+            className={state?.consumed ? "active" : ""}
             onClick={() => onToggle("consumed")}
             aria-label="Mark consumed"
             title="Consumed"
