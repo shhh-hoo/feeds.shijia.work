@@ -1,6 +1,7 @@
 import type { ItemState, ItemStateMap } from "../types";
 
 const KEY = "feeds.shijia.work:item-state:v1";
+type StateKey = keyof Omit<ItemState, "updatedAt">;
 
 export function readItemStates(): ItemStateMap {
   try {
@@ -15,16 +16,17 @@ export function writeItemStates(states: ItemStateMap) {
   localStorage.setItem(KEY, JSON.stringify(states));
 }
 
-export function mergeItemState(
+export function mergeItemState<K extends StateKey>(
   states: ItemStateMap,
   id: string,
-  patch: Omit<ItemState, "updatedAt">
+  key: K,
+  value: ItemState[K]
 ): ItemStateMap {
   return {
     ...states,
     [id]: {
       ...states[id],
-      ...patch,
+      [key]: value,
       updatedAt: new Date().toISOString()
     }
   };
