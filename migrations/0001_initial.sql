@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS sources (
 
 CREATE TABLE IF NOT EXISTS items (
   id TEXT PRIMARY KEY,
-  canonical_url TEXT UNIQUE,
+  canonical_url TEXT,
   kind TEXT NOT NULL,
   interest_id TEXT NOT NULL,
   title TEXT NOT NULL,
