@@ -131,19 +131,26 @@ export async function reconcileRemoteState(
   ]);
 
   if (remote.writeEnabled) {
-    await Promise.all(
+    const uploaded = await Promise.all(
       Object.entries(localNewer).map(async ([itemId, state]) => {
         const item = itemLookup.get(itemId);
-        if (!item) return;
+        if (!item) return null;
 
-        await syncState(item, item.briefingDate, {
+        const serverState = await syncState(item, item.briefingDate, {
           read: state.read,
           saved: state.saved,
           skipped: state.skipped,
           liked: state.liked
         });
+
+        return serverState ? ([itemId, serverState] as const) : null;
       })
     );
+
+    for (const entry of uploaded) {
+      if (!entry) continue;
+      mergedStates[entry[0]] = entry[1];
+    }
   }
 
   return {
