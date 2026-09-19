@@ -12,8 +12,8 @@ export default defineConfig({
         name: "feeds.shijia.work",
         short_name: "Feeds",
         description: "A personal intelligence and cultural feed.",
-        theme_color: "#f5f5f3",
-        background_color: "#f5f5f3",
+        theme_color: "#f2f3f4",
+        background_color: "#f2f3f4",
         display: "standalone",
         start_url: "/",
         icons: [
