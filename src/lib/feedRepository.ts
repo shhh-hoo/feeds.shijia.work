@@ -1,16 +1,12 @@
 import { fallbackFeed } from "../data/fallbackFeed";
-import type { DailyFeedSnapshot, ItemState, ItemStateMap } from "../types";
-
-const CLIENT_ID_KEY = "feeds.shijia.work:client-id:v1";
-
-export function getClientId() {
-  let id = localStorage.getItem(CLIENT_ID_KEY);
-  if (!id) {
-    id = crypto.randomUUID();
-    localStorage.setItem(CLIENT_ID_KEY, id);
-  }
-  return id;
-}
+import { findLocalNewerStates, mergeSavedItems, mergeStateMaps } from "./stateSync";
+import type {
+  DailyFeedSnapshot,
+  FeedItem,
+  ItemState,
+  ItemStateMap,
+  SavedItemMap
+} from "../types";
 
 function isFeedSnapshot(value: unknown): value is DailyFeedSnapshot {
   if (!value || typeof value !== "object") return false;
@@ -36,38 +32,57 @@ export async function loadFeed(date = fallbackFeed.date): Promise<DailyFeedSnaps
   }
 }
 
-export async function loadRemoteStates(): Promise<ItemStateMap | null> {
+export type RemoteStateBundle = {
+  states: ItemStateMap;
+  savedItems: SavedItemMap;
+  writeEnabled: boolean;
+};
+
+export async function loadRemoteStateBundle(): Promise<RemoteStateBundle | null> {
   try {
-    const clientId = getClientId();
-    const response = await fetch("/api/state?clientId=" + encodeURIComponent(clientId), {
+    const response = await fetch("/api/state", {
       headers: { accept: "application/json" }
     });
     if (!response.ok) return null;
-    const value = (await response.json()) as { states?: ItemStateMap };
-    return value.states ?? null;
+
+    const value = (await response.json()) as {
+      states?: ItemStateMap;
+      savedItems?: SavedItemMap;
+      writeEnabled?: boolean;
+    };
+
+    return {
+      states: value.states ?? {},
+      savedItems: value.savedItems ?? {},
+      writeEnabled: Boolean(value.writeEnabled)
+    };
   } catch {
     return null;
   }
 }
 
 export async function syncState(
-  itemId: string,
+  item: FeedItem,
   briefingDate: string,
-  patch: Partial<Pick<ItemState, "saved" | "consumed" | "skipped" | "liked">>
-) {
+  patch: Partial<Pick<ItemState, "read" | "saved" | "skipped" | "liked">>
+): Promise<ItemState | null> {
   try {
-    await fetch("/api/state", {
+    const response = await fetch("/api/state", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
-        clientId: getClientId(),
-        itemId,
+        itemId: item.id,
         briefingDate,
-        patch
+        patch,
+        itemSnapshot: patch.saved === true ? item : undefined
       })
     });
+
+    if (!response.ok) return null;
+    const value = (await response.json()) as { state?: ItemState };
+    return value.state ?? null;
   } catch {
-    // Local state remains authoritative when remote sync is unavailable.
+    return null;
   }
 }
 
@@ -82,7 +97,6 @@ export async function recordEvent(
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
-        clientId: getClientId(),
         itemId,
         briefingDate,
         eventType,
@@ -94,13 +108,47 @@ export async function recordEvent(
   }
 }
 
-export function mergeStates(local: ItemStateMap, remote: ItemStateMap): ItemStateMap {
-  const merged = { ...local };
-  for (const [id, state] of Object.entries(remote)) {
-    const current = merged[id];
-    if (!current || state.updatedAt > current.updatedAt) {
-      merged[id] = state;
-    }
+export async function reconcileRemoteState(
+  localStates: ItemStateMap,
+  localSavedItems: SavedItemMap,
+  feedItems: FeedItem[]
+) {
+  const remote = await loadRemoteStateBundle();
+  if (!remote) {
+    return {
+      states: localStates,
+      savedItems: localSavedItems,
+      syncAvailable: false
+    };
   }
-  return merged;
+
+  const mergedStates = mergeStateMaps(localStates, remote.states);
+  const mergedSavedItems = mergeSavedItems(localSavedItems, remote.savedItems);
+  const localNewer = findLocalNewerStates(localStates, remote.states);
+  const itemLookup = new Map<string, FeedItem>([
+    ...feedItems.map((item) => [item.id, item] as const),
+    ...Object.entries(localSavedItems)
+  ]);
+
+  if (remote.writeEnabled) {
+    await Promise.all(
+      Object.entries(localNewer).map(async ([itemId, state]) => {
+        const item = itemLookup.get(itemId);
+        if (!item) return;
+
+        await syncState(item, item.briefingDate, {
+          read: state.read,
+          saved: state.saved,
+          skipped: state.skipped,
+          liked: state.liked
+        });
+      })
+    );
+  }
+
+  return {
+    states: mergedStates,
+    savedItems: mergedSavedItems,
+    syncAvailable: remote.writeEnabled
+  };
 }
