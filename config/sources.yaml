@@ -1,0 +1,1006 @@
+version: 1
+
+scoring_scale:
+  authority: "1-5, factual/source authority"
+  taste_fit: "1-5, expected fit for this feed"
+  signal_density: "1-5, proportion of useful material"
+  commercial_bias: "1-5, higher means stronger commercial/PR incentives"
+
+rules:
+  primary_before_secondary_for_current_facts: true
+  community_is_discovery_not_fact: true
+  archive_sources_can_ignore_recency: true
+  source_pool_is_expandable: true
+  weekly_source_discovery_target: 5
+
+sources:
+  # AI / current / software
+  - id: openai-news
+    name: OpenAI News
+    url: https://openai.com/news/
+    interests: [current-signals, agent-software, career-product]
+    modes: [current]
+    type: primary
+    cadence: daily
+    language: en
+    region: global
+    authority: 5
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 4
+
+  - id: openai-research
+    name: OpenAI Research
+    url: https://openai.com/research/
+    interests: [current-signals, agent-software, learning-education]
+    modes: [current, expansion]
+    type: primary
+    cadence: daily
+    language: en
+    region: global
+    authority: 5
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 4
+
+  - id: anthropic-news
+    name: Anthropic News
+    url: https://www.anthropic.com/news
+    interests: [current-signals, agent-software, career-product]
+    modes: [current]
+    type: primary
+    cadence: daily
+    language: en
+    region: global
+    authority: 5
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 4
+
+  - id: anthropic-research
+    name: Anthropic Research
+    url: https://www.anthropic.com/research
+    interests: [current-signals, agent-software, learning-education]
+    modes: [current, expansion]
+    type: primary
+    cadence: daily
+    language: en
+    region: global
+    authority: 5
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 4
+
+  - id: google-deepmind
+    name: Google DeepMind
+    url: https://deepmind.google/discover/blog/
+    interests: [current-signals, agent-software, learning-education]
+    modes: [current, expansion]
+    type: primary
+    cadence: daily
+    language: en
+    region: global
+    authority: 5
+    taste_fit: 4
+    signal_density: 4
+    commercial_bias: 4
+
+  - id: google-developers-ai
+    name: Google Developers AI
+    url: https://developers.googleblog.com/
+    interests: [current-signals, agent-software]
+    modes: [current]
+    type: primary
+    cadence: daily
+    language: en
+    region: global
+    authority: 5
+    taste_fit: 4
+    signal_density: 4
+    commercial_bias: 4
+
+  - id: vercel-changelog
+    name: Vercel Changelog
+    url: https://vercel.com/changelog
+    interests: [agent-software, career-product]
+    modes: [current]
+    type: primary
+    cadence: daily
+    language: en
+    region: global
+    authority: 5
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 4
+
+  - id: nextjs-blog
+    name: Next.js Blog
+    url: https://nextjs.org/blog
+    interests: [agent-software]
+    modes: [current, expansion]
+    type: primary
+    cadence: weekly
+    language: en
+    region: global
+    authority: 5
+    taste_fit: 4
+    signal_density: 4
+    commercial_bias: 3
+
+  - id: cloudflare-blog
+    name: Cloudflare Blog
+    url: https://blog.cloudflare.com/
+    interests: [agent-software, current-signals]
+    modes: [current, expansion]
+    type: specialist
+    cadence: daily
+    language: en
+    region: global
+    authority: 5
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 3
+
+  - id: github-changelog
+    name: GitHub Changelog
+    url: https://github.blog/changelog/
+    interests: [agent-software, current-signals]
+    modes: [current]
+    type: primary
+    cadence: daily
+    language: en
+    region: global
+    authority: 5
+    taste_fit: 4
+    signal_density: 4
+    commercial_bias: 3
+
+  - id: huggingface-blog
+    name: Hugging Face Blog
+    url: https://huggingface.co/blog
+    interests: [current-signals, agent-software]
+    modes: [current, expansion]
+    type: specialist
+    cadence: daily
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 4
+    signal_density: 4
+    commercial_bias: 3
+
+  - id: hacker-news
+    name: Hacker News
+    url: https://news.ycombinator.com/
+    interests: [agent-software, current-signals, internet-self-media, career-product]
+    modes: [current, discovery]
+    type: community
+    cadence: daily
+    language: en
+    region: global
+    authority: 2
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 1
+
+  - id: lobsters
+    name: Lobsters
+    url: https://lobste.rs/
+    interests: [agent-software, internet-self-media]
+    modes: [current, discovery]
+    type: community
+    cadence: daily
+    language: en
+    region: global
+    authority: 2
+    taste_fit: 4
+    signal_density: 4
+    commercial_bias: 1
+
+  - id: papers-we-love
+    name: Papers We Love
+    url: https://github.com/papers-we-love/papers-we-love
+    interests: [agent-software, literature-ideas, learning-education]
+    modes: [expansion]
+    type: archive
+    cadence: weekly
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 1
+
+  # Learning / education
+  - id: learning-scientists
+    name: The Learning Scientists
+    url: https://www.learningscientists.org/
+    interests: [learning-education]
+    modes: [expansion]
+    type: specialist
+    cadence: weekly
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 1
+
+  - id: digital-promise
+    name: Digital Promise
+    url: https://digitalpromise.org/
+    interests: [learning-education, career-product]
+    modes: [current, expansion]
+    type: specialist
+    cadence: weekly
+    language: en
+    region: us
+    authority: 4
+    taste_fit: 4
+    signal_density: 3
+    commercial_bias: 2
+
+  - id: edsurge
+    name: EdSurge
+    url: https://www.edsurge.com/
+    interests: [learning-education, career-product]
+    modes: [current, discovery]
+    type: trade
+    cadence: daily
+    language: en
+    region: us
+    authority: 3
+    taste_fit: 4
+    signal_density: 3
+    commercial_bias: 3
+
+  - id: lak-conference
+    name: Learning Analytics & Knowledge
+    url: https://www.solaresearch.org/events/lak/
+    interests: [learning-education]
+    modes: [current, expansion]
+    type: research
+    cadence: monthly
+    language: en
+    region: global
+    authority: 5
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 1
+
+  - id: educational-data-mining
+    name: Educational Data Mining
+    url: https://educationaldatamining.org/
+    interests: [learning-education]
+    modes: [current, expansion]
+    type: research
+    cadence: monthly
+    language: en
+    region: global
+    authority: 5
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 1
+
+  # Design
+  - id: its-nice-that
+    name: It's Nice That
+    url: https://www.itsnicethat.com/
+    interests: [design, internet-self-media]
+    modes: [current, expansion, discovery]
+    type: specialist
+    cadence: daily
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 3
+
+  - id: brand-identity
+    name: The Brand Identity
+    url: https://the-brandidentity.com/
+    interests: [design, fashion-apparel, internet-self-media]
+    modes: [current, expansion, discovery]
+    type: specialist
+    cadence: daily
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 3
+
+  - id: bpando
+    name: BP&O
+    url: https://bpando.org/
+    interests: [design]
+    modes: [expansion]
+    type: specialist
+    cadence: weekly
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 2
+
+  - id: fonts-in-use
+    name: Fonts In Use
+    url: https://fontsinuse.com/
+    interests: [design]
+    modes: [expansion, discovery]
+    type: archive
+    cadence: weekly
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 1
+
+  - id: siteinspire
+    name: SiteInspire
+    url: https://www.siteinspire.com/
+    interests: [design]
+    modes: [expansion, discovery]
+    type: archive
+    cadence: weekly
+    language: en
+    region: global
+    authority: 3
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 1
+
+  - id: hoverstates
+    name: Hoverstat.es
+    url: https://hoverstat.es/
+    interests: [design, internet-self-media]
+    modes: [expansion, discovery]
+    type: archive
+    cadence: weekly
+    language: en
+    region: global
+    authority: 3
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 1
+
+  - id: arena
+    name: Are.na
+    url: https://www.are.na/
+    interests: [design, literature-ideas, internet-self-media]
+    modes: [expansion, discovery]
+    type: community
+    cadence: weekly
+    language: mixed
+    region: global
+    authority: 2
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 1
+
+  - id: public-domain-review
+    name: The Public Domain Review
+    url: https://publicdomainreview.org/
+    interests: [design, literature-ideas, internet-self-media]
+    modes: [expansion]
+    type: archive
+    cadence: weekly
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 1
+
+  # Music
+  - id: bandcamp-daily
+    name: Bandcamp Daily
+    url: https://daily.bandcamp.com/
+    interests: [screen-sound]
+    modes: [current, expansion, discovery]
+    type: specialist
+    cadence: daily
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 2
+
+  - id: resident-advisor
+    name: Resident Advisor
+    url: https://ra.co/
+    interests: [screen-sound, queer-culture]
+    modes: [current, expansion, discovery]
+    type: specialist
+    cadence: daily
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 2
+
+  - id: nts
+    name: NTS
+    url: https://www.nts.live/
+    interests: [screen-sound, internet-self-media]
+    modes: [expansion, discovery]
+    type: curator
+    cadence: daily
+    language: en
+    region: global
+    authority: 3
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 1
+
+  - id: quietus
+    name: The Quietus
+    url: https://thequietus.com/
+    interests: [screen-sound, literature-ideas]
+    modes: [current, expansion]
+    type: specialist
+    cadence: daily
+    language: en
+    region: uk
+    authority: 4
+    taste_fit: 4
+    signal_density: 4
+    commercial_bias: 2
+
+  - id: pitchfork
+    name: Pitchfork
+    url: https://pitchfork.com/
+    interests: [screen-sound]
+    modes: [current, discovery]
+    type: specialist
+    cadence: daily
+    language: en
+    region: global
+    authority: 3
+    taste_fit: 3
+    signal_density: 3
+    commercial_bias: 3
+
+  - id: gorilla-vs-bear
+    name: Gorilla vs. Bear
+    url: https://www.gorillavsbear.net/
+    interests: [screen-sound]
+    modes: [current, discovery]
+    type: curator
+    cadence: weekly
+    language: en
+    region: global
+    authority: 3
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 2
+
+  # Film / TV
+  - id: mubi-notebook
+    name: MUBI Notebook
+    url: https://mubi.com/en/notebook
+    interests: [screen-sound, queer-culture, design]
+    modes: [current, expansion, discovery]
+    type: specialist
+    cadence: daily
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 2
+
+  - id: sight-and-sound
+    name: Sight and Sound
+    url: https://www.bfi.org.uk/sight-and-sound
+    interests: [screen-sound, queer-culture]
+    modes: [current, expansion]
+    type: specialist
+    cadence: daily
+    language: en
+    region: uk
+    authority: 5
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 1
+
+  - id: film-comment
+    name: Film Comment
+    url: https://www.filmcomment.com/
+    interests: [screen-sound]
+    modes: [current, expansion]
+    type: specialist
+    cadence: weekly
+    language: en
+    region: us
+    authority: 5
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 1
+
+  - id: senses-of-cinema
+    name: Senses of Cinema
+    url: https://www.sensesofcinema.com/
+    interests: [screen-sound, literature-ideas]
+    modes: [expansion]
+    type: archive
+    cadence: monthly
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 1
+
+  - id: criterion-current
+    name: The Current
+    url: https://www.criterion.com/current
+    interests: [screen-sound, literature-ideas]
+    modes: [expansion]
+    type: specialist
+    cadence: weekly
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 2
+
+  - id: asian-film-archive
+    name: Asian Film Archive
+    url: https://asianfilmarchive.org/
+    interests: [screen-sound, queer-culture]
+    modes: [current, expansion]
+    type: archive
+    cadence: weekly
+    language: en
+    region: asia
+    authority: 5
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 1
+
+  - id: kofic
+    name: Korean Film Council
+    url: https://www.koreanfilm.or.kr/
+    interests: [screen-sound]
+    modes: [current, expansion]
+    type: primary
+    cadence: weekly
+    language: en
+    region: korea
+    authority: 5
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 1
+
+  - id: letterboxd
+    name: Letterboxd
+    url: https://letterboxd.com/
+    interests: [screen-sound]
+    modes: [discovery]
+    type: community
+    cadence: daily
+    language: mixed
+    region: global
+    authority: 1
+    taste_fit: 4
+    signal_density: 3
+    commercial_bias: 2
+
+  # Literature / ideas
+  - id: words-without-borders
+    name: Words Without Borders
+    url: https://wordswithoutborders.org/
+    interests: [literature-ideas, queer-culture]
+    modes: [current, expansion, discovery]
+    type: specialist
+    cadence: weekly
+    language: mixed
+    region: global
+    authority: 5
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 1
+
+  - id: asymptote
+    name: Asymptote
+    url: https://www.asymptotejournal.com/
+    interests: [literature-ideas, queer-culture]
+    modes: [expansion, discovery]
+    type: specialist
+    cadence: weekly
+    language: mixed
+    region: global
+    authority: 5
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 1
+
+  - id: clarkesworld
+    name: Clarkesworld
+    url: https://clarkesworldmagazine.com/
+    interests: [literature-ideas]
+    modes: [current, expansion]
+    type: magazine
+    cadence: monthly
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 4
+    signal_density: 4
+    commercial_bias: 1
+
+  - id: strange-horizons
+    name: Strange Horizons
+    url: https://strangehorizons.com/
+    interests: [literature-ideas, queer-culture]
+    modes: [current, expansion]
+    type: magazine
+    cadence: weekly
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 1
+
+  - id: aozora-bunko
+    name: Aozora Bunko
+    url: https://www.aozora.gr.jp/
+    interests: [literature-ideas]
+    modes: [expansion]
+    type: archive
+    cadence: monthly
+    language: ja
+    region: japan
+    authority: 5
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 1
+
+  - id: project-gutenberg
+    name: Project Gutenberg
+    url: https://www.gutenberg.org/
+    interests: [literature-ideas]
+    modes: [expansion]
+    type: archive
+    cadence: monthly
+    language: mixed
+    region: global
+    authority: 5
+    taste_fit: 4
+    signal_density: 4
+    commercial_bias: 1
+
+  - id: aeon
+    name: Aeon
+    url: https://aeon.co/
+    interests: [literature-ideas, learning-education, internet-self-media]
+    modes: [expansion]
+    type: magazine
+    cadence: weekly
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 1
+
+  # Internet / self-media / Chinese internet
+  - id: 404-media
+    name: 404 Media
+    url: https://www.404media.co/
+    interests: [internet-self-media, current-signals]
+    modes: [current, discovery]
+    type: specialist
+    cadence: daily
+    language: en
+    region: us
+    authority: 4
+    taste_fit: 4
+    signal_density: 4
+    commercial_bias: 2
+
+  - id: garbage-day
+    name: Garbage Day
+    url: https://www.garbageday.email/
+    interests: [internet-self-media]
+    modes: [current, expansion, discovery]
+    type: curator
+    cadence: weekly
+    language: en
+    region: global
+    authority: 2
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 2
+
+  - id: douban
+    name: 豆瓣
+    url: https://www.douban.com/
+    interests: [screen-sound, literature-ideas, internet-self-media]
+    modes: [discovery]
+    type: community
+    cadence: daily
+    language: zh
+    region: china
+    authority: 1
+    taste_fit: 5
+    signal_density: 3
+    commercial_bias: 1
+
+  - id: bilibili
+    name: 哔哩哔哩
+    url: https://www.bilibili.com/
+    interests: [internet-self-media, design, screen-sound]
+    modes: [discovery]
+    type: community
+    cadence: daily
+    language: zh
+    region: china
+    authority: 1
+    taste_fit: 4
+    signal_density: 3
+    commercial_bias: 3
+
+  - id: xiaohongshu
+    name: 小红书
+    url: https://www.xiaohongshu.com/
+    interests: [internet-self-media, fashion-apparel, cross-border-commerce, design]
+    modes: [discovery]
+    type: community
+    cadence: daily
+    language: zh
+    region: china
+    authority: 1
+    taste_fit: 4
+    signal_density: 3
+    commercial_bias: 4
+
+  # Queer / policy / culture
+  - id: ilga-world
+    name: ILGA World
+    url: https://ilga.org/
+    interests: [queer-culture, current-signals]
+    modes: [current, expansion]
+    type: primary
+    cadence: weekly
+    language: en
+    region: global
+    authority: 5
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 1
+
+  - id: them
+    name: Them
+    url: https://www.them.us/
+    interests: [queer-culture, screen-sound, fashion-apparel]
+    modes: [current, expansion, discovery]
+    type: specialist
+    cadence: daily
+    language: en
+    region: global
+    authority: 3
+    taste_fit: 4
+    signal_density: 3
+    commercial_bias: 3
+
+  - id: queer-lion
+    name: Queer Lion
+    url: https://www.queerlion.it/
+    interests: [queer-culture, screen-sound]
+    modes: [current, expansion]
+    type: primary
+    cadence: seasonal
+    language: en
+    region: europe
+    authority: 4
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 1
+
+  # Cross-border commerce
+  - id: marketplace-pulse
+    name: Marketplace Pulse
+    url: https://www.marketplacepulse.com/
+    interests: [cross-border-commerce, career-product]
+    modes: [current, expansion]
+    type: trade
+    cadence: daily
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 2
+
+  - id: modern-retail
+    name: Modern Retail
+    url: https://www.modernretail.co/
+    interests: [cross-border-commerce, fashion-apparel]
+    modes: [current, expansion]
+    type: trade
+    cadence: daily
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 4
+    signal_density: 4
+    commercial_bias: 3
+
+  - id: retail-brew
+    name: Retail Brew
+    url: https://www.retailbrew.com/
+    interests: [cross-border-commerce, fashion-apparel]
+    modes: [current, discovery]
+    type: trade
+    cadence: daily
+    language: en
+    region: us
+    authority: 3
+    taste_fit: 4
+    signal_density: 3
+    commercial_bias: 3
+
+  - id: shopify-editions
+    name: Shopify Editions
+    url: https://www.shopify.com/editions
+    interests: [cross-border-commerce, career-product, agent-software]
+    modes: [current]
+    type: primary
+    cadence: seasonal
+    language: en
+    region: global
+    authority: 5
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 4
+
+  - id: shopify-enterprise-blog
+    name: Shopify Enterprise
+    url: https://www.shopify.com/enterprise/blog
+    interests: [cross-border-commerce, career-product]
+    modes: [current, expansion]
+    type: trade
+    cadence: weekly
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 4
+    signal_density: 3
+    commercial_bias: 4
+
+  - id: practical-ecommerce
+    name: Practical Ecommerce
+    url: https://www.practicalecommerce.com/
+    interests: [cross-border-commerce]
+    modes: [current, expansion]
+    type: trade
+    cadence: daily
+    language: en
+    region: global
+    authority: 3
+    taste_fit: 4
+    signal_density: 4
+    commercial_bias: 2
+
+  # Fashion / apparel
+  - id: vogue-runway
+    name: Vogue Runway
+    url: https://www.vogue.com/fashion-shows
+    interests: [fashion-apparel, design]
+    modes: [current, expansion, discovery]
+    type: archive
+    cadence: daily
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 5
+    commercial_bias: 3
+
+  - id: showstudio
+    name: SHOWstudio
+    url: https://www.showstudio.com/
+    interests: [fashion-apparel, design, screen-sound]
+    modes: [current, expansion]
+    type: specialist
+    cadence: daily
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 2
+
+  - id: ssense-editorial
+    name: SSENSE Editorial
+    url: https://www.ssense.com/en-us/editorial
+    interests: [fashion-apparel, design, internet-self-media]
+    modes: [expansion, discovery]
+    type: specialist
+    cadence: weekly
+    language: en
+    region: global
+    authority: 3
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 4
+
+  - id: dazed
+    name: Dazed
+    url: https://www.dazeddigital.com/
+    interests: [fashion-apparel, design, screen-sound, queer-culture]
+    modes: [current, expansion, discovery]
+    type: magazine
+    cadence: daily
+    language: en
+    region: global
+    authority: 3
+    taste_fit: 4
+    signal_density: 3
+    commercial_bias: 3
+
+  - id: another
+    name: AnOther
+    url: https://www.anothermag.com/
+    interests: [fashion-apparel, design, screen-sound]
+    modes: [current, expansion]
+    type: magazine
+    cadence: weekly
+    language: en
+    region: global
+    authority: 4
+    taste_fit: 5
+    signal_density: 4
+    commercial_bias: 3
+
+  - id: hypebeast
+    name: Hypebeast
+    url: https://hypebeast.com/
+    interests: [fashion-apparel, cross-border-commerce, internet-self-media]
+    modes: [current, discovery]
+    type: trade
+    cadence: daily
+    language: en
+    region: global
+    authority: 2
+    taste_fit: 3
+    signal_density: 3
+    commercial_bias: 4
+
+  # Career
+  - id: yc-work-at-startup
+    name: YC Work at a Startup
+    url: https://www.workatastartup.com/
+    interests: [career-product, agent-software]
+    modes: [current, discovery]
+    type: jobs
+    cadence: weekly
+    language: en
+    region: global
+    authority: 3
+    taste_fit: 4
+    signal_density: 3
+    commercial_bias: 2
+
+  - id: wellfound
+    name: Wellfound
+    url: https://wellfound.com/jobs
+    interests: [career-product, agent-software]
+    modes: [current, discovery]
+    type: jobs
+    cadence: weekly
+    language: en
+    region: global
+    authority: 2
+    taste_fit: 3
+    signal_density: 3
+    commercial_bias: 3

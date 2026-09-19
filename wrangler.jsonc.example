@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "feeds-shijia-work",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-09-19",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "feeds-shijia",
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    "FEEDS_WRITE_ENABLED": "0"
+  }
+}

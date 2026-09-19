@@ -1,7 +1,20 @@
-import { useMemo, useState } from "react";
-import { seedItems } from "./data/seed";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { fallbackFeed } from "./data/fallbackFeed";
+import {
+  loadFeed,
+  loadRemoteStates,
+  mergeStates,
+  recordEvent,
+  syncState
+} from "./lib/feedRepository";
 import { mergeItemState, readItemStates, writeItemStates } from "./lib/storage";
-import type { FeedItem, ItemState, ItemStateMap } from "./types";
+import type {
+  ContentBlock,
+  DailyFeedSnapshot,
+  FeedItem,
+  ItemState,
+  ItemStateMap
+} from "./types";
 
 type View = "today" | "saved" | "archive";
 type StateKey = "saved" | "consumed" | "skipped" | "liked";
@@ -16,37 +29,64 @@ function formatDate(value: string) {
     .toUpperCase();
 }
 
+function Block({ block }: { block: ContentBlock }) {
+  if (block.type === "metric") {
+    return (
+      <div className="card-block metric">
+        <strong>{block.value}</strong>
+        <span>{block.label}</span>
+        {block.note ? <small>{block.note}</small> : null}
+      </div>
+    );
+  }
+
+  const className = "card-block " + block.type;
+  const prefix = block.type === "bullet" ? "• " : block.type === "watch-for" ? "→ " : "";
+
+  return <p className={className}>{prefix + block.text}</p>;
+}
+
 function Card({
   item,
   state,
-  onToggle
+  onToggle,
+  onOpen
 }: {
   item: FeedItem;
   state?: ItemState;
   onToggle: (key: StateKey) => void;
+  onOpen: () => void;
 }) {
+  const primarySource = item.sources[0];
+
   return (
     <article
       className={"card span-" + (item.span ?? 1) + (state?.skipped ? " is-skipped" : "")}
       data-kind={item.kind}
     >
-      {item.imageUrl ? (
-        <img className="card-media" src={item.imageUrl} alt="" loading="lazy" />
+      {item.media ? (
+        <img
+          className="card-media"
+          src={item.media.url}
+          alt={item.media.alt}
+          loading="lazy"
+        />
       ) : null}
 
       <div className="card-content">
-        <ul>
-          {item.content.map((line) => (
-            <li key={line}>{line}</li>
-          ))}
-        </ul>
+        {item.blocks.map((block, index) => (
+          <Block key={index} block={block} />
+        ))}
       </div>
 
       <div className="card-footer">
         <div className="card-index">
           <strong>{item.title}</strong>
           <span>
-            {[...(item.meta ?? []), item.minutes ? item.minutes + " MIN" : ""]
+            {[
+              ...item.tags.slice(0, 3).map((tag) => tag.toUpperCase()),
+              item.minutes ? item.minutes + " MIN" : ""
+            ]
               .filter(Boolean)
               .join(" · ")}
           </span>
@@ -88,9 +128,15 @@ function Card({
         </div>
       </div>
 
-      {item.sourceUrl ? (
-        <a className="card-link" href={item.sourceUrl} target="_blank" rel="noreferrer">
-          {item.source ?? "Source"} ↗
+      {primarySource ? (
+        <a
+          className="card-link"
+          href={primarySource.url}
+          target="_blank"
+          rel="noreferrer"
+          onClick={onOpen}
+        >
+          {primarySource.name} ↗
         </a>
       ) : null}
     </article>
@@ -99,42 +145,74 @@ function Card({
 
 export default function App() {
   const [view, setView] = useState<View>("today");
+  const [feed, setFeed] = useState<DailyFeedSnapshot>(fallbackFeed);
   const [states, setStates] = useState<ItemStateMap>(() => readItemStates());
+  const shown = useRef(new Set<string>());
+
+  useEffect(() => {
+    let cancelled = false;
+
+    void (async () => {
+      const [remoteFeed, remoteStates] = await Promise.all([
+        loadFeed(fallbackFeed.date),
+        loadRemoteStates()
+      ]);
+
+      if (cancelled) return;
+      setFeed(remoteFeed);
+
+      if (remoteStates) {
+        setStates((current) => {
+          const next = mergeStates(current, remoteStates);
+          writeItemStates(next);
+          return next;
+        });
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    for (const item of feed.items) {
+      if (shown.current.has(item.id)) continue;
+      shown.current.add(item.id);
+      void recordEvent(item.id, feed.date, "shown");
+    }
+  }, [feed]);
 
   const items = useMemo(() => {
     if (view === "saved") {
-      return seedItems.filter((item) => states[item.id]?.saved);
+      return feed.items.filter((item) => states[item.id]?.saved);
     }
 
     if (view === "archive") {
-      return [...seedItems].sort((a, b) => b.date.localeCompare(a.date));
+      return [...feed.items].sort((a, b) =>
+        (b.publishedAt ?? b.discoveredAt).localeCompare(a.publishedAt ?? a.discoveredAt)
+      );
     }
 
-    const today = seedItems[0]?.date;
-    return seedItems.filter(
-      (item) => item.date === today && !states[item.id]?.skipped
-    );
-  }, [states, view]);
+    return feed.items.filter((item) => !states[item.id]?.skipped);
+  }, [feed, states, view]);
 
   function toggle(item: FeedItem, key: StateKey) {
+    const value = !states[item.id]?.[key];
+
     setStates((current) => {
-      const next = mergeItemState(
-        current,
-        item.id,
-        key,
-        !current[item.id]?.[key]
-      );
+      const next = mergeItemState(current, item.id, key, value);
       writeItemStates(next);
       return next;
     });
-  }
 
-  const activeDate = seedItems[0]?.date ?? new Date().toISOString().slice(0, 10);
+    void syncState(item.id, feed.date, { [key]: value });
+  }
 
   return (
     <main className="shell">
       <header className="topline">
-        <time dateTime={activeDate}>{formatDate(activeDate)}</time>
+        <time dateTime={feed.date}>{formatDate(feed.date)}</time>
         <nav aria-label="Feed views">
           {(["today", "saved", "archive"] as View[]).map((key) => (
             <button
@@ -156,6 +234,7 @@ export default function App() {
               item={item}
               state={states[item.id]}
               onToggle={(key) => toggle(item, key)}
+              onOpen={() => void recordEvent(item.id, feed.date, "opened")}
             />
           ))
         ) : (

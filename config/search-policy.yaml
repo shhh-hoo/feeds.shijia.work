@@ -1,0 +1,91 @@
+version: 1
+
+selection:
+  current_target: 0.40
+  expansion_target: 0.60
+  wildcard_target_range: [0.05, 0.10]
+  hard_daily_quotas: false
+  low_signal_categories_may_be_empty: true
+
+budgets:
+  current-signals:
+    queries_per_run: 8
+    source_checks_per_run: 12
+    archive_queries_per_week: 0
+  career-product:
+    queries_per_run: 5
+    source_checks_per_run: 8
+    archive_queries_per_week: 2
+  agent-software:
+    queries_per_run: 8
+    source_checks_per_run: 12
+    archive_queries_per_week: 5
+  learning-education:
+    queries_per_run: 4
+    source_checks_per_run: 6
+    archive_queries_per_week: 5
+  design:
+    queries_per_run: 4
+    source_checks_per_run: 8
+    archive_queries_per_week: 10
+  screen-sound:
+    queries_per_run: 6
+    source_checks_per_run: 10
+    archive_queries_per_week: 10
+  literature-ideas:
+    queries_per_run: 3
+    source_checks_per_run: 7
+    archive_queries_per_week: 10
+  internet-self-media:
+    queries_per_run: 5
+    source_checks_per_run: 8
+    archive_queries_per_week: 4
+  queer-culture:
+    queries_per_run: 4
+    source_checks_per_run: 6
+    archive_queries_per_week: 5
+  cross-border-commerce:
+    queries_per_run: 5
+    source_checks_per_run: 8
+    archive_queries_per_week: 4
+  fashion-apparel:
+    queries_per_run: 4
+    source_checks_per_run: 8
+    archive_queries_per_week: 8
+
+layers:
+  - id: strict-current
+    priority: 1
+    description: "24-72h current sweep. Verify dates and prefer primary sources."
+  - id: specialist-pool
+    priority: 2
+    description: "Domain-specific publications and archives. Search beyond generic web results."
+  - id: community-early-signal
+    priority: 3
+    description: "HN, community platforms, GitHub and similar. Discovery only until verified."
+  - id: expansion-archive
+    priority: 4
+    description: "Actively seek older high-quality work; recency is not a ranking feature."
+  - id: source-discovery
+    priority: 5
+    description: "Find new critics, curators, studios, labels, newsletters, archives and journals."
+
+source_discovery:
+  cadence: weekly
+  minimum_new_candidates: 5
+  promote_after_successful_hits: 2
+  demote_after_low_signal_checks: 8
+  fields_to_score:
+    - authority
+    - taste_fit
+    - signal_density
+    - originality
+    - update_frequency
+    - commercial_bias
+
+repetition:
+  same_item_30d: -100
+  same_creator_7d: -30
+  same_topic_3d: -15
+  same_region_3d: -5
+  same_source_3d: -5

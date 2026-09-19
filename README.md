@@ -50,3 +50,16 @@ npm run preview
 4. repetition and diversity controls
 5. richer media cards and daily snapshots
 6. Cloudflare deployment
+
+
+## Data foundation
+
+- `config/sources.yaml` — scored, multi-domain source graph
+- `config/search-policy.yaml` — search effort, source discovery and repetition controls
+- `content/briefings/*.json` — structured daily snapshots
+- `migrations/` — D1 schema
+- `functions/api/` — Pages Functions for feed/state/exposure APIs
+- `docs/D1_SETUP.md` — local and remote D1 setup
+- `docs/SOURCE_STRATEGY.md` — retrieval and source-pool rules
+
+Remote D1 writes are intentionally disabled until the deployment is protected by an authentication boundary.
