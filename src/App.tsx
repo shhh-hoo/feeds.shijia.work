@@ -118,9 +118,12 @@ export default function App() {
 
   function toggle(item: FeedItem, key: StateKey) {
     setStates((current) => {
-      const next = mergeItemState(current, item.id, {
-        [key]: !current[item.id]?.[key]
-      });
+      const next = mergeItemState(
+        current,
+        item.id,
+        key,
+        !current[item.id]?.[key]
+      );
       writeItemStates(next);
       return next;
     });
