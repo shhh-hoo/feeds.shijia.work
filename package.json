@@ -11,6 +11,7 @@
     "validate:data": "node scripts/validate-briefings.mjs",
     "validate": "npm run validate:sources && npm run validate:data",
     "sources:sql": "node scripts/sources-to-sql.mjs",
+    "briefing:sql": "node scripts/briefing-to-sql.mjs",
     "dev:pages": "npm run build && wrangler pages dev dist",
     "db:create": "wrangler d1 create feeds-shijia",
     "db:migrate:local": "wrangler d1 migrations apply feeds-shijia --local",
