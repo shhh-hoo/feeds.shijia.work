@@ -47,10 +47,27 @@ button {
   margin-bottom: 12px;
 }
 
+.topline-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .topline time {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.06em;
+}
+
+.sync-status {
+  font-size: 8px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: #9a9da0;
+}
+
+.sync-status.synced {
+  color: #3f4347;
 }
 
 .topline nav {
@@ -100,6 +117,11 @@ button {
 
 .card.is-skipped {
   opacity: 0.44;
+}
+
+.card.is-read .card-index strong,
+.card.is-read .card-index span {
+  color: #8a8d91;
 }
 
 .card-media {

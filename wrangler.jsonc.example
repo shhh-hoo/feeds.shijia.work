@@ -12,6 +12,8 @@
     }
   ],
   "vars": {
-    "FEEDS_WRITE_ENABLED": "0"
+    "FEEDS_WRITE_ENABLED": "0",
+    "TEAM_DOMAIN": "https://REPLACE_WITH_TEAM.cloudflareaccess.com",
+    "POLICY_AUD": "REPLACE_WITH_ACCESS_APPLICATION_AUD"
   }
 }

@@ -63,3 +63,16 @@ npm run preview
 - `docs/SOURCE_STRATEGY.md` — retrieval and source-pool rules
 
 Remote D1 writes are intentionally disabled until the deployment is protected by an authentication boundary.
+
+
+## Cross-device reading
+
+Reading state is local-first and syncs through Cloudflare D1 when the site is protected by Cloudflare Access.
+
+- `✓` = read
+- `☆ / ★` = save / unsave
+- Saved items carry a lightweight snapshot so they remain visible on another device even when they came from an older daily briefing.
+- The Access email is validated at the edge and hashed before it becomes the D1 user key.
+- If sync is unavailable, the feed falls back to local state instead of blocking reading.
+
+See `docs/CROSS_DEVICE_SYNC.md`.

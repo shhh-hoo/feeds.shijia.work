@@ -103,11 +103,12 @@ export type DailyFeedSnapshot = {
 };
 
 export type ItemState = {
+  read?: boolean;
   saved?: boolean;
-  consumed?: boolean;
   skipped?: boolean;
   liked?: boolean;
   updatedAt: string;
 };
 
 export type ItemStateMap = Record<string, ItemState>;
+export type SavedItemMap = Record<string, FeedItem>;
