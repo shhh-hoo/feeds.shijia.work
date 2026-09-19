@@ -115,20 +115,46 @@ button {
   padding: 18px 18px 16px;
 }
 
-.card-content ul {
-  margin: 0;
-  padding-left: 1.05em;
-}
-
-.card-content li {
-  margin: 0 0 0.7em;
+.card-block {
+  margin: 0 0 0.72em;
   font-size: clamp(15px, 1.3vw, 20px);
   line-height: 1.37;
   letter-spacing: -0.015em;
 }
 
-.card-content li:last-child {
+.card-block:last-child {
   margin-bottom: 0;
+}
+
+.card-block.note {
+  color: #55595d;
+}
+
+.card-block.watch-for {
+  color: #34373a;
+}
+
+.card-block.metric {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 10px;
+  row-gap: 2px;
+  align-items: baseline;
+}
+
+.card-block.metric strong {
+  font-size: 1.6em;
+  line-height: 1;
+}
+
+.card-block.metric span,
+.card-block.metric small {
+  font-size: 0.7em;
+  color: #6f7377;
+}
+
+.card-block.metric small {
+  grid-column: 2;
 }
 
 .card-footer {
@@ -241,7 +267,7 @@ button {
     padding: 15px 15px 13px;
   }
 
-  .card-content li {
+  .card-block {
     font-size: 16px;
     line-height: 1.38;
   }
