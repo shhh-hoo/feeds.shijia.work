@@ -3,3 +3,6 @@ dist
 .DS_Store
 *.local
 .vscode/
+.wrangler/
+wrangler.jsonc
+.generated-sources.sql
