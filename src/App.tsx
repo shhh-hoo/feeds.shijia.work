@@ -231,16 +231,13 @@ export default function App() {
     }
 
     void (async () => {
-      const serverState = await syncState(item, feed.date, { [key]: value });
+      const serverState = await syncState(item, item.briefingDate, { [key]: value });
       if (!serverState) {
         setSyncStatus("local");
         return;
       }
 
       setStates((current) => {
-        const local = current[item.id];
-        if (local && local.updatedAt > serverState.updatedAt) return current;
-
         const next = { ...current, [item.id]: serverState };
         writeItemStates(next);
         return next;
