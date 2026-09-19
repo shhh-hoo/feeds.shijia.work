@@ -1,6 +1,8 @@
 # D1 setup
 
-The app is deliberately local-first. D1 is the durable sync and archive layer; the UI still works from the bundled daily snapshot if D1 is absent.
+D1 is used for **cross-device reading state**, not for content generation.
+
+The daily feed remains GitHub/Scheduled-Work owned. The browser remains local-first so reading state works even during a network or sync failure.
 
 ## 1. Create local Wrangler config
 
@@ -8,7 +10,7 @@ The app is deliberately local-first. D1 is the durable sync and archive layer; t
 cp wrangler.jsonc.example wrangler.jsonc
 ```
 
-`wrangler.jsonc` is gitignored because the actual D1 database ID is deployment-specific.
+`wrangler.jsonc` is gitignored because the actual D1 database ID and Access configuration are deployment-specific.
 
 ## 2. Create the database
 
@@ -32,23 +34,34 @@ Remote:
 npm run db:migrate:remote
 ```
 
-## 4. Import source pool
+The cross-device tables are created by `0002_cross_device_reading_state.sql`.
 
-```bash
-npm run sources:sql > .generated-sources.sql
-npx wrangler d1 execute feeds-shijia --local --file=.generated-sources.sql
+## 4. Configure Cloudflare Access
+
+Create a self-hosted Access application for the deployed feed and restrict it to the intended identity.
+
+Set:
+
+- `TEAM_DOMAIN=https://<team>.cloudflareaccess.com`
+- `POLICY_AUD=<Access Application AUD tag>`
+
+The API verifies the signed `Cf-Access-Jwt-Assertion`; it does not trust a user-supplied email or browser-generated client ID.
+
+## 5. Enable writes only after authentication works
+
+Start with:
+
+```text
+FEEDS_WRITE_ENABLED=0
 ```
 
-Use `--remote` after checking the generated SQL.
+Verify `GET /api/state` while signed in through Access. Then switch to:
 
-## 5. Import a daily snapshot
-
-```bash
-npm run briefing:sql -- content/briefings/2026-09-19.json > .generated-briefing.sql
-npx wrangler d1 execute feeds-shijia --local --file=.generated-briefing.sql
+```text
+FEEDS_WRITE_ENABLED=1
 ```
 
-Again, switch to `--remote` only after local verification.
+and redeploy.
 
 ## 6. Run Pages + Functions locally
 
@@ -56,24 +69,20 @@ Again, switch to `--remote` only after local verification.
 npm run dev:pages
 ```
 
-The relevant routes are:
+Local development without an Access JWT will intentionally fall back to local-only state unless you provide a valid Access-protected environment.
+
+## Routes
 
 - `GET /api/feed?date=YYYY-MM-DD`
-- `GET /api/state?clientId=...`
+- `GET /api/state`
 - `POST /api/state`
 - `POST /api/event`
 - `GET /api/health`
 
-## Remote writes are off by default
-
-`FEEDS_WRITE_ENABLED=0` is intentional.
-
-Do not set it to `1` on an unauthenticated public deployment. Protect the site/API with Cloudflare Access first, then enable writes.
-
-The browser always writes to localStorage immediately. Remote writes are best-effort sync; if D1 is offline or disabled, the feed remains usable.
-
 ## Source of truth
 
-- `config/sources.yaml`: source graph
-- `content/briefings/*.json`: immutable daily snapshots
-- D1: durable runtime copy, exposure history, reading state, feedback
+- GitHub briefing JSON: content
+- browser localStorage: immediate/offline state
+- D1 `reading_state`: cross-device state
+- D1 saved snapshot: only enough content to render Saved across devices
+- D1 `reading_events`: lightweight interaction history
