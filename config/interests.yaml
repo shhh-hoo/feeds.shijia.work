@@ -1,0 +1,75 @@
+version: 1
+
+principles:
+  current_ratio_target: 0.40
+  expansion_ratio_target: 0.60
+  wildcard_min: 0.05
+  wildcard_max: 0.10
+  no_forced_quota: true
+
+interests:
+  - id: current-signals
+    label: Current Signals
+    weight: 14
+    search_intensity: very_high
+    freshness: 72h
+
+  - id: career-product
+    label: Career & Product
+    weight: 10
+    search_intensity: high
+    freshness: 14d
+
+  - id: agent-software
+    label: Agent & Software Craft
+    weight: 12
+    search_intensity: very_high
+    freshness: mixed
+
+  - id: learning-education
+    label: Learning & Education
+    weight: 8
+    search_intensity: medium_high
+    freshness: mixed
+
+  - id: design
+    label: Design
+    weight: 10
+    search_intensity: high
+    freshness: expansion_first
+
+  - id: screen-sound
+    label: Screen & Sound
+    weight: 13
+    search_intensity: high
+    freshness: mixed
+
+  - id: literature-ideas
+    label: Literature & Ideas
+    weight: 9
+    search_intensity: medium_high
+    freshness: archive_heavy
+
+  - id: internet-self-media
+    label: Internet & Self-media
+    weight: 7
+    search_intensity: high
+    freshness: mixed
+
+  - id: queer-culture
+    label: Queer & Culture
+    weight: 6
+    search_intensity: medium_high
+    freshness: mixed
+
+  - id: cross-border-commerce
+    label: Cross-border Commerce
+    weight: 6
+    search_intensity: medium_high
+    freshness: mixed
+
+  - id: fashion-apparel
+    label: Fashion & Apparel
+    weight: 5
+    search_intensity: medium_high
+    freshness: seasonal_archive

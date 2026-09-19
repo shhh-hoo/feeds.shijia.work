@@ -2,4 +2,51 @@
 
 A personal intelligence and cultural feed.
 
-This repository is the web app, local-first reading state, daily snapshots, and future discovery/ranking pipeline for `feeds.shijia.work`.
+The product is a web app first, with daily snapshots as an export/archive format. It is designed around two jobs:
+
+1. **Current signals** — stay current without filling the feed with low-signal news.
+2. **Expansion** — continuously widen taste, methods, references, and source pools across design, software, learning, culture, media, fashion, commerce, literature, and adjacent fields.
+
+## Current foundation
+
+- React + Vite + TypeScript
+- installable PWA
+- responsive content-first feed
+- Today / Saved / Archive views
+- local-first reading state
+- interest weights in `config/interests.yaml`
+- future SQLite / Cloudflare D1 model documented in `docs/DATA_MODEL.md`
+
+The current cards are scaffolding, not the final visual system.
+
+## Local development
+
+```bash
+npm install
+npm run dev
+```
+
+Production verification:
+
+```bash
+npm run build
+npm run preview
+```
+
+## Product constraints
+
+- content is visually primary; titles are secondary index labels
+- neutral UI; no decorative gradients or category-color system
+- real media may carry its own color; the UI should not invent color
+- current news does not get automatic priority over expansion
+- design, screen & sound, literature, fashion, commerce, software craft, learning, queer culture, internet culture, and wildcard discovery are first-class inputs
+- the durable system should remember discovery and exposure, not only final recommendations
+
+## Next layers
+
+1. durable item/source/exposure store
+2. source pool + source discovery
+3. discovery / normalization / ranking pipeline
+4. repetition and diversity controls
+5. richer media cards and daily snapshots
+6. Cloudflare deployment
