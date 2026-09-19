@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
 import { seedItems } from "./data/seed";
 import { mergeItemState, readItemStates, writeItemStates } from "./lib/storage";
-import type { FeedItem, ItemStateMap } from "./types";
+import type { FeedItem, ItemState, ItemStateMap } from "./types";
 
 type View = "today" | "saved" | "archive";
+type StateKey = "saved" | "consumed" | "skipped" | "liked";
 
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("en-GB", {
@@ -21,8 +22,8 @@ function Card({
   onToggle
 }: {
   item: FeedItem;
-  state: ItemStateMap[string];
-  onToggle: (key: "saved" | "consumed" | "skipped" | "liked") => void;
+  state?: ItemState;
+  onToggle: (key: StateKey) => void;
 }) {
   return (
     <article
@@ -115,7 +116,7 @@ export default function App() {
     );
   }, [states, view]);
 
-  function toggle(item: FeedItem, key: "saved" | "consumed" | "skipped" | "liked") {
+  function toggle(item: FeedItem, key: StateKey) {
     setStates((current) => {
       const next = mergeItemState(current, item.id, {
         [key]: !current[item.id]?.[key]
