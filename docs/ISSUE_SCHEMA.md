@@ -43,7 +43,7 @@ An Item is an editorial unit. The serialized shape deliberately separates four c
 
 ```text
 Item
-├── editorial      what the Item says and why it belongs
+├── editorial      what the Item says
 ├── presentation   reader intent, not layout
 ├── provenance     evidence, sources and claim classification
 └── metadata       generation/editorial data not necessarily displayed
@@ -53,8 +53,7 @@ Item
 
 Required:
 
-- `title` — editorial identity;
-- `why` — why this Item belongs in the Issue.
+- `title` — editorial identity.
 
 Optional content forms:
 
@@ -64,7 +63,7 @@ Optional content forms:
 - `structured` — factual label/value data when structure is genuinely useful;
 - `creator` — creator/author/artist/studio when relevant.
 
-A publishable Item must contain actual content beyond a title and rationale, but no one optional form is required. A short dispatch can use only a lede. A native essay can use several paragraphs. A listening recommendation may use a lede plus entry point. The schema does not force prose into bullets, “watch-for” fragments, or metric blocks.
+A publishable Item must contain actual editorial content beyond its title, but no one optional form is required. A short dispatch can use only a lede. A native essay can use several paragraphs. A listening recommendation may use a lede plus entry point. The schema does not force prose into bullets, “watch-for” fragments, or metric blocks.
 
 ### `presentation`
 
@@ -95,7 +94,12 @@ Source roles are:
 - `availability` — where a work can be accessed, watched, listened to or obtained;
 - `original` — the original text/work when source text itself is represented.
 
-Optional `rights` metadata can distinguish `public-domain`, `licensed`, `quoted`, and `link-only` material where that distinction matters.
+Two independent optional dimensions describe legal status and Feeds usage:
+
+- `rights`: `public-domain`, `licensed`, or `permission`;
+- `usage`: `link-only`, `quoted`, or `reproduced`.
+
+`rights` describes the source material's legal/permission status when known and relevant. `usage` describes what Feeds actually does with that material. They must not be inferred from one another.
 
 `provenance.assertions` classifies evidence-bearing statements as:
 
@@ -104,7 +108,9 @@ Optional `rights` metadata can distinguish `public-domain`, `licensed`, `quoted`
 - `editorial-inference`;
 - `source-text`.
 
-Facts, attributed claims and source text require valid source references. Editorial inference may be source-informed without pretending that the inference is itself a sourced fact. `source-text` must point to a source whose role is `original`; public-domain status, when known and relevant, belongs on that source's `rights` field.
+Assertions are an optional, selective evidence ledger for claim-level auditability where that binding is materially useful. They must not mirror or paraphrase every sentence of `lede`, `body`, `entryPoint`, or other editorial prose, and they are not a second machine-facing copy of the article.
+
+Facts, attributed claims and source text require valid source references. Editorial inference may be represented when there is a genuine reason to audit that inference, but routine editorial interpretation belongs in the editorial prose rather than being duplicated as an assertion. `source-text` must point to a source whose role is `original`; public-domain status, when known and relevant, belongs on that source's `rights` field.
 
 This structure supports later editorial/source inspection without claiming that structural validation proves source truth.
 
@@ -117,9 +123,10 @@ Optional metadata can contain:
 - `language` / `region`;
 - `discoveredAt`;
 - `estimatedMinutes`;
-- `relatedItemRefs`.
+- `relatedItemRefs`;
+- `selectionReason` — optional machine/editorial rationale for generation or review workflows.
 
-These fields may help generation, validation, indexing or future reader behavior, but they are not required presentation chrome. `relatedItemRefs` are local Item IDs and must resolve inside the same Issue.
+`selectionReason` is non-display metadata: it may preserve an operational selection rationale, but published prose must not depend on it or render a mandatory “why it matters” block. These metadata fields may help generation, validation, indexing or future reader behavior, but they are not required presentation chrome. `relatedItemRefs` are local Item IDs and must resolve inside the same Issue.
 
 ## Deterministic validation
 
@@ -135,6 +142,7 @@ It rejects deterministically detectable structural failures, including:
 - unsupported presentation modes;
 - Items with no publishable content;
 - malformed source records and URLs;
+- unsupported source `rights` or `usage` values;
 - broken source references;
 - duplicate source IDs/references;
 - source publication dates after the Issue date;
