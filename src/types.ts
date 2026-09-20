@@ -15,7 +15,8 @@ export type IssueSourceRole =
   | "availability"
   | "original";
 
-export type IssueSourceRights = "public-domain" | "licensed" | "quoted" | "link-only";
+export type IssueSourceRights = "public-domain" | "licensed" | "permission";
+export type IssueSourceUsage = "link-only" | "quoted" | "reproduced";
 
 export type IssueSource = {
   id: string;
@@ -25,6 +26,7 @@ export type IssueSource = {
   publishedAt?: string;
   accessedAt?: string;
   rights?: IssueSourceRights;
+  usage?: IssueSourceUsage;
 };
 
 export type ProvenanceAssertion = {
@@ -41,7 +43,6 @@ export type StructuredFact = {
 
 export type IssueEditorial = {
   title: string;
-  why: string;
   creator?: string;
   lede?: string;
   body?: string[];
@@ -74,6 +75,7 @@ export type IssueItemMetadata = {
   discoveredAt?: string;
   estimatedMinutes?: number;
   relatedItemRefs?: string[];
+  selectionReason?: string;
 };
 
 export type IssueItem = {
