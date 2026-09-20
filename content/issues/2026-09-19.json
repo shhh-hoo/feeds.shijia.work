@@ -16,10 +16,11 @@
             "title": "Actress — Radical Frame",
             "creator": "Actress",
             "lede": "Bandcamp Daily selected Radical Frame as Album of the Day on September 17, making it a timely electronic-music discovery rather than an archive pull.",
-            "entryPoint": "Listen to the full record before treating the recommendation as settled; the useful test is whether its textures and pacing earn a second play.",
-            "why": "A current release lead from a specialist source with strong electronic-scene coverage."
+            "entryPoint": "Listen to the full record before treating the recommendation as settled; the useful test is whether its textures and pacing earn a second play."
           },
-          "presentation": { "mode": "listening" },
+          "presentation": {
+            "mode": "listening"
+          },
           "provenance": {
             "sources": [
               {
@@ -28,24 +29,27 @@
                 "url": "https://daily.bandcamp.com/genres/electronic",
                 "role": "primary",
                 "publishedAt": "2026-09-17",
-                "rights": "link-only"
+                "usage": "link-only"
               }
             ],
             "assertions": [
               {
                 "kind": "fact",
                 "text": "Bandcamp Daily selected Radical Frame as Album of the Day on September 17, 2026.",
-                "sourceRefs": ["bandcamp-daily-actress"]
-              },
-              {
-                "kind": "editorial-inference",
-                "text": "Its value here is as a current discovery lead whose repeat-listen value still has to be judged by the reader."
+                "sourceRefs": [
+                  "bandcamp-daily-actress"
+                ]
               }
             ]
           },
           "metadata": {
-            "interests": ["screen-sound"],
-            "tags": ["electronic", "album"],
+            "interests": [
+              "screen-sound"
+            ],
+            "tags": [
+              "electronic",
+              "album"
+            ],
             "discoveredAt": "2026-09-19T16:24:00+08:00",
             "estimatedMinutes": 40
           }
@@ -59,10 +63,11 @@
             "body": [
               "The useful angle is scene structure: who is releasing the music, where activity is concentrated, and how the genre's rhythmic vocabulary is changing after wider international attention.",
               "Read it as a current map of a living scene, not as a definitive history of gqom."
-            ],
-            "why": "A time-sensitive culture dispatch that widens current awareness without becoming generic release news."
+            ]
           },
-          "presentation": { "mode": "dispatch" },
+          "presentation": {
+            "mode": "dispatch"
+          },
           "provenance": {
             "sources": [
               {
@@ -71,27 +76,34 @@
                 "url": "https://daily.bandcamp.com/genres/electronic",
                 "role": "primary",
                 "publishedAt": "2026-09-15",
-                "rights": "link-only"
+                "usage": "link-only"
               }
             ],
             "assertions": [
               {
                 "kind": "fact",
                 "text": "Bandcamp Daily published the scene report on September 15, 2026.",
-                "sourceRefs": ["bandcamp-daily-gqom"]
-              },
-              {
-                "kind": "editorial-inference",
-                "text": "The report is most useful as a map of scene structure rather than as a playlist recommendation."
+                "sourceRefs": [
+                  "bandcamp-daily-gqom"
+                ]
               }
             ]
           },
           "metadata": {
-            "interests": ["screen-sound"],
-            "tags": ["gqom", "electronic", "scene", "south-africa"],
+            "interests": [
+              "screen-sound"
+            ],
+            "tags": [
+              "gqom",
+              "electronic",
+              "scene",
+              "south-africa"
+            ],
             "discoveredAt": "2026-09-19T16:28:00+08:00",
             "estimatedMinutes": 12,
-            "relatedItemRefs": ["actress-radical-frame"]
+            "relatedItemRefs": [
+              "actress-radical-frame"
+            ]
           }
         }
       ]
@@ -107,10 +119,11 @@
             "body": [
               "The durable lesson is narrower than the old implementation: D1 migrations are sequential SQL files tracked in the repository, and bindings can expose the database to server-side request handlers.",
               "Phase 1 has since superseded D1 as an editorial content store. This item therefore belongs as a technical explanation of the earlier mechanism, not as the target Feeds architecture."
-            ],
-            "why": "It preserves a useful technical mechanism from the existing project history while separating that mechanism from the now-superseded editorial-D1 architecture."
+            ]
           },
-          "presentation": { "mode": "essay" },
+          "presentation": {
+            "mode": "essay"
+          },
           "provenance": {
             "sources": [
               {
@@ -118,7 +131,7 @@
                 "name": "Cloudflare Developers — Pages Functions bindings",
                 "url": "https://developers.cloudflare.com/pages/functions/bindings/",
                 "role": "primary",
-                "rights": "link-only"
+                "usage": "link-only"
               },
               {
                 "id": "cloudflare-d1-migrations",
@@ -126,31 +139,38 @@
                 "url": "https://developers.cloudflare.com/d1/reference/migrations/",
                 "role": "primary",
                 "publishedAt": "2026-06-08",
-                "rights": "link-only"
+                "usage": "link-only"
               }
             ],
             "assertions": [
               {
                 "kind": "fact",
                 "text": "Pages Functions support bindings, including D1 bindings.",
-                "sourceRefs": ["cloudflare-pages-bindings"]
+                "sourceRefs": [
+                  "cloudflare-pages-bindings"
+                ]
               },
               {
                 "kind": "fact",
                 "text": "D1 migrations are represented as ordered SQL migration files.",
-                "sourceRefs": ["cloudflare-d1-migrations"]
-              },
-              {
-                "kind": "editorial-inference",
-                "text": "Those mechanisms remain technically useful even though D1-backed editorial content is no longer the canonical Feeds direction."
+                "sourceRefs": [
+                  "cloudflare-d1-migrations"
+                ]
               }
             ]
           },
           "metadata": {
-            "interests": ["agent-software"],
-            "tags": ["cloudflare", "d1", "architecture"],
+            "interests": [
+              "agent-software"
+            ],
+            "tags": [
+              "cloudflare",
+              "d1",
+              "architecture"
+            ],
             "discoveredAt": "2026-09-19T16:26:00+08:00",
-            "estimatedMinutes": 10
+            "estimatedMinutes": 10,
+            "selectionReason": "It preserves a useful technical mechanism from the existing project history while separating that mechanism from the now-superseded editorial-D1 architecture."
           }
         },
         {
@@ -159,10 +179,11 @@
             "title": "Fall 2026 Ready-to-Wear archive",
             "creator": "Vogue Runway",
             "lede": "Treat Vogue Runway's Fall 2026 index as a visual corpus rather than a news story: it lets the reader compare silhouettes, styling, materials and collection-level consistency across brands.",
-            "entryPoint": "Choose three visibly different brands and compare silhouette, proportion, palette and merchandising logic before reading the reviews.",
-            "why": "A visual expansion object should train product and design judgment, not merely track fashion headlines."
+            "entryPoint": "Choose three visibly different brands and compare silhouette, proportion, palette and merchandising logic before reading the reviews."
           },
-          "presentation": { "mode": "object" },
+          "presentation": {
+            "mode": "object"
+          },
           "provenance": {
             "sources": [
               {
@@ -170,24 +191,29 @@
                 "name": "Vogue Runway",
                 "url": "https://www.vogue.com/fashion-shows/fall-2026-ready-to-wear",
                 "role": "primary",
-                "rights": "link-only"
+                "usage": "link-only"
               }
             ],
             "assertions": [
               {
                 "kind": "fact",
                 "text": "Vogue Runway maintains a Fall 2026 Ready-to-Wear collection index.",
-                "sourceRefs": ["vogue-runway-fall-2026"]
-              },
-              {
-                "kind": "editorial-inference",
-                "text": "The index is more useful here as a comparative visual corpus than as a single news item."
+                "sourceRefs": [
+                  "vogue-runway-fall-2026"
+                ]
               }
             ]
           },
           "metadata": {
-            "interests": ["fashion-apparel", "design"],
-            "tags": ["fashion", "runway", "visual-research"],
+            "interests": [
+              "fashion-apparel",
+              "design"
+            ],
+            "tags": [
+              "fashion",
+              "runway",
+              "visual-research"
+            ],
             "discoveredAt": "2026-09-19T16:27:00+08:00",
             "estimatedMinutes": 20
           }
@@ -202,10 +228,11 @@
               "The table of contents is useful as a map of what film criticism can look like when it behaves like curation rather than review aggregation.",
               "Skim the package first, then choose one strand—an interview, an archive piece, a festival report or another form—and follow that rather than trying to consume the whole issue linearly."
             ],
-            "entryPoint": "Start with the table of contents and use it to pick one unfamiliar form of film writing.",
-            "why": "An archive-value reading recommendation that expands both film culture and editorial-form references."
+            "entryPoint": "Start with the table of contents and use it to pick one unfamiliar form of film writing."
           },
-          "presentation": { "mode": "reading" },
+          "presentation": {
+            "mode": "reading"
+          },
           "provenance": {
             "sources": [
               {
@@ -214,24 +241,30 @@
                 "url": "https://mubi.com/en/notebook/posts/table-of-contents-notebook-special-2026",
                 "role": "primary",
                 "publishedAt": "2026-05-14",
-                "rights": "link-only"
+                "usage": "link-only"
               }
             ],
             "assertions": [
               {
                 "kind": "fact",
                 "text": "MUBI Notebook published the 2026 special table of contents on May 14, 2026.",
-                "sourceRefs": ["mubi-notebook-special"]
-              },
-              {
-                "kind": "editorial-inference",
-                "text": "Its value is as a curated map of film-writing forms rather than as a review list."
+                "sourceRefs": [
+                  "mubi-notebook-special"
+                ]
               }
             ]
           },
           "metadata": {
-            "interests": ["screen-sound", "design"],
-            "tags": ["film", "criticism", "editorial", "archive"],
+            "interests": [
+              "screen-sound",
+              "design"
+            ],
+            "tags": [
+              "film",
+              "criticism",
+              "editorial",
+              "archive"
+            ],
             "discoveredAt": "2026-09-19T16:25:00+08:00",
             "estimatedMinutes": 15
           }
