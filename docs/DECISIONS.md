@@ -1,6 +1,6 @@
 # Feeds Canonical Decisions
 
-Status: **Canonical — Phase 1 system convergence**  
+Status: **Canonical — system convergence**  
 Established: 2026-09-19
 
 This log records the decisions that govern subsequent Feeds work. Earlier repository artifacts remain useful implementation history, but they do not override accepted decisions here.
@@ -114,6 +114,22 @@ This log records the decisions that govern subsequent Feeds work. Earlier reposi
 
 **Verification status:** not production-verified. Issue #4 remains open and documents outstanding account-side Access/D1 provisioning and E2E checks.
 
+### D-011 — Published Daily Issues use the self-contained v2 Issue artifact
+
+**Decision:** Canonical published content is serialized as `feeds.daily-issue` version 2 under `content/issues/YYYY-MM-DD.json`.
+
+**Consequences:**
+- the Issue root carries stable identity, date/timezone, generation/publication timestamps, and ordered editorial contents;
+- Current and Expansion are explicit first-class sections; each section is present even when empty, and neither has a publication quota;
+- Item semantics are split into `editorial`, `presentation`, `provenance`, and optional machine/editorial `metadata`;
+- the v1 presentation vocabulary is `dispatch`, `essay`, `object`, `listening`, `viewing`, and `reading`; these describe reader intent and never encode Current/Expansion, priority, or layout;
+- canonical artifacts contain enough Item/source identity and provenance to reconstruct historical Issues from GitHub without D1;
+- `content/issues/` supersedes `content/briefings/`; the single prototype v1 briefing is migrated by clean cut rather than by a general compatibility converter;
+- the current React reader may temporarily consume v2 through a one-way legacy adapter until Phase 5;
+- no v2 D1 import path is created, and the superseded v1 editorial database/API path remains legacy code for later removal.
+
+**Schema reference:** `docs/ISSUE_SCHEMA.md`.
+
 ## Explicitly superseded assumptions
 
 | Existing assumption | Status | Canonical replacement |
@@ -155,3 +171,4 @@ Phase 2 may define the Daily Issue schema v2 only if it preserves:
 - enough identity/provenance to support real historical Archive behavior.
 
 Exact serialization, presentation-mode enum, and migration path from the v1 briefing shape are Phase 2 design work, not unresolved Phase 1 contracts.
+

@@ -1,3 +1,112 @@
+export type EditorialMode = "current" | "expansion";
+
+export type PresentationMode =
+  | "dispatch"
+  | "essay"
+  | "object"
+  | "listening"
+  | "viewing"
+  | "reading";
+
+export type IssueSourceRole =
+  | "primary"
+  | "verification"
+  | "context"
+  | "availability"
+  | "original";
+
+export type IssueSourceRights = "public-domain" | "licensed" | "permission";
+export type IssueSourceUsage = "link-only" | "quoted" | "reproduced";
+
+export type IssueSource = {
+  id: string;
+  name: string;
+  url: string;
+  role: IssueSourceRole;
+  publishedAt?: string;
+  accessedAt?: string;
+  rights?: IssueSourceRights;
+  usage?: IssueSourceUsage;
+};
+
+export type ProvenanceAssertion = {
+  kind: "fact" | "attributed-claim" | "editorial-inference" | "source-text";
+  text: string;
+  sourceRefs?: string[];
+};
+
+export type StructuredFact = {
+  label: string;
+  value: string;
+  sourceRefs?: string[];
+};
+
+export type IssueEditorial = {
+  title: string;
+  creator?: string;
+  lede?: string;
+  body?: string[];
+  entryPoint?: string;
+  structured?: StructuredFact[];
+};
+
+export type IssueMedia = {
+  kind?: "image" | "cover" | "poster" | "still";
+  url: string;
+  alt: string;
+  credit?: string;
+};
+
+export type IssuePresentation = {
+  mode: PresentationMode;
+  media?: IssueMedia[];
+};
+
+export type IssueProvenance = {
+  sources: IssueSource[];
+  assertions?: ProvenanceAssertion[];
+};
+
+export type IssueItemMetadata = {
+  interests?: string[];
+  tags?: string[];
+  language?: string;
+  region?: string;
+  discoveredAt?: string;
+  estimatedMinutes?: number;
+  relatedItemRefs?: string[];
+  selectionReason?: string;
+};
+
+export type IssueItem = {
+  id: string;
+  editorial: IssueEditorial;
+  presentation: IssuePresentation;
+  provenance: IssueProvenance;
+  metadata?: IssueItemMetadata;
+};
+
+export type EditorialSection = {
+  mode: EditorialMode;
+  items: IssueItem[];
+};
+
+export type DailyIssueV2 = {
+  schema: "feeds.daily-issue";
+  version: 2;
+  id: string;
+  date: string;
+  timezone: string;
+  generatedAt: string;
+  publishedAt: string;
+  contents: EditorialSection[];
+};
+
+/*
+ * Legacy reader/state types below are intentionally retained during convergence.
+ * They are adapter/runtime shapes for the Phase 1 React reader and are not the
+ * canonical published editorial schema. Phase 5 will move the reader to DailyIssueV2.
+ */
 export type FeedKind =
   | "signal"
   | "career"
