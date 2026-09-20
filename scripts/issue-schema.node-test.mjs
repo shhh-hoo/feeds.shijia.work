@@ -19,6 +19,64 @@ test("valid heterogeneous Daily Issue v2 fixture passes", () => {
   const modes = new Set(allItems(fixture).map((item) => item.presentation.mode));
   assert.ok(modes.size >= 5, "fixture should exercise heterogeneous presentation intent");
   for (const mode of modes) assert.ok(PRESENTATION_MODES.includes(mode));
+  for (const item of allItems(fixture)) {
+    assert.equal("why" in item.editorial, false, "editorial.why must not reappear in the fixture");
+    assert.ok(
+      !(item.provenance.assertions ?? []).some((assertion) => assertion.kind === "editorial-inference"),
+      "fixture assertions should remain a selective evidence ledger rather than duplicate editorial interpretation"
+    );
+  }
+});
+
+
+test("selectionReason is optional non-display metadata", () => {
+  const issue = clone();
+  for (const item of allItems(issue)) {
+    if (item.metadata) delete item.metadata.selectionReason;
+  }
+  assert.deepEqual(validateIssue(issue), []);
+});
+
+test("selectionReason cannot make an otherwise empty Item publishable", () => {
+  expectInvalid((issue) => {
+    const item = issue.contents[1].items[0];
+    item.metadata ??= {};
+    item.metadata.selectionReason = "Operational rationale only.";
+    delete item.editorial.lede;
+    delete item.editorial.body;
+    delete item.editorial.entryPoint;
+    delete item.editorial.structured;
+  }, /no publishable editorial content/);
+});
+
+test("source rights and usage are independent optional dimensions", () => {
+  const issue = clone();
+  const source = issue.contents[1].items[0].provenance.sources[0];
+  source.rights = "public-domain";
+  source.usage = "reproduced";
+  assert.deepEqual(validateIssue(issue), []);
+
+  delete source.rights;
+  delete source.usage;
+  assert.deepEqual(validateIssue(issue), []);
+});
+
+test("source rights rejects usage values", () => {
+  expectInvalid((issue) => {
+    issue.contents[1].items[0].provenance.sources[0].rights = "link-only";
+  }, /unsupported rights value/);
+});
+
+test("source usage rejects rights values", () => {
+  expectInvalid((issue) => {
+    issue.contents[1].items[0].provenance.sources[0].usage = "licensed";
+  }, /unsupported usage value/);
+});
+
+test("provenance assertions remain optional", () => {
+  const issue = clone();
+  for (const item of allItems(issue)) delete item.provenance.assertions;
+  assert.deepEqual(validateIssue(issue), []);
 });
 
 test("malformed Issue identity/date/timezone fails", () => {
@@ -72,7 +130,7 @@ test("empty publishable Item fails", () => {
     delete editorial.body;
     delete editorial.entryPoint;
     delete editorial.structured;
-  }, /no publishable content/);
+  }, /no publishable editorial content/);
 });
 
 test("future-dated Current source fails deterministically", () => {
