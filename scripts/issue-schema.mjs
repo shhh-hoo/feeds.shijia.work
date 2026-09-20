@@ -15,7 +15,8 @@ export const ASSERTION_KINDS = ["fact", "attributed-claim", "editorial-inference
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const ISSUE_ID_RE = /^issue-\d{4}-\d{2}-\d{2}$/;
-const RIGHTS = new Set(["public-domain", "licensed", "quoted", "link-only"]);
+const RIGHTS = new Set(["public-domain", "licensed", "permission"]);
+const USAGE = new Set(["link-only", "quoted", "reproduced"]);
 
 function isRecord(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -129,6 +130,9 @@ function validateSource(source, at, errors, issueDate) {
   if (source.rights != null && !RIGHTS.has(source.rights)) {
     errors.push(`${at}.rights: unsupported rights value ${String(source.rights)}`);
   }
+  if (source.usage != null && !USAGE.has(source.usage)) {
+    errors.push(`${at}.usage: unsupported usage value ${String(source.usage)}`);
+  }
 }
 
 function validateSourceRefs(refs, at, errors, sourceIds, { required = false } = {}) {
@@ -171,7 +175,6 @@ function validateItem(item, at, errors, issueDate, mode, allItems) {
   } else {
     const editorial = item.editorial;
     if (!isNonEmptyString(editorial.title)) errors.push(`${at}.editorial.title: must be non-empty`);
-    if (!isNonEmptyString(editorial.why)) errors.push(`${at}.editorial.why: must be non-empty`);
 
     if (editorial.lede != null && !isNonEmptyString(editorial.lede)) {
       errors.push(`${at}.editorial.lede: must be a non-empty string when present`);
@@ -205,7 +208,7 @@ function validateItem(item, at, errors, issueDate, mode, allItems) {
       (Array.isArray(editorial.body) && editorial.body.some(isNonEmptyString)) ||
       (Array.isArray(editorial.structured) && editorial.structured.length > 0);
     if (!hasPublishableContent) {
-      errors.push(`${at}.editorial: Item has no publishable content beyond title/rationale`);
+      errors.push(`${at}.editorial: Item has no publishable editorial content`);
     }
   }
 
@@ -325,6 +328,9 @@ function validateItem(item, at, errors, issueDate, mode, allItems) {
       }
       if (item.metadata.relatedItemRefs != null) {
         checkStringArray(item.metadata.relatedItemRefs, `${at}.metadata.relatedItemRefs`, errors, { slug: true });
+      }
+      if (item.metadata.selectionReason != null && !isNonEmptyString(item.metadata.selectionReason)) {
+        errors.push(`${at}.metadata.selectionReason: must be a non-empty string when present`);
       }
     }
   }
