@@ -95,7 +95,11 @@ function toLegacyItem(issue: DailyIssueV2, item: IssueItem, mode: "current" | "e
     title: item.editorial.title,
     blocks,
     sources: legacySources(item),
-    selectionReason: item.editorial.why,
+    selectionReason:
+      item.metadata?.selectionReason ??
+      item.editorial.lede ??
+      item.editorial.entryPoint ??
+      item.editorial.title,
     creator: item.editorial.creator,
     publishedAt: firstDatedSource?.publishedAt,
     discoveredAt: item.metadata?.discoveredAt ?? issue.generatedAt,
